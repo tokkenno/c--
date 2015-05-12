@@ -5,7 +5,7 @@
         FILE* salida;
         int counter = 1, i = 0;
         int error = 0;
-        
+
         void onError();
         void endError();
 %}
@@ -18,7 +18,7 @@ BARRA \\
 COMENTARIOSIMPLE "//"
 COMENTARIOMULTILINEA "/*"
 COMENTARIOFINAL "*/"
-RESERVADA "auto"|"break"|"case"|"char"|"const"|"continue"|"default"|"define"|"do"|"double"|"else"|"enum"|"extern"|"float"|"for"|"goto"|"if"|"include"|"int"|"long"|"register"|"return"|"short"|"signed"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"volatile"|"while"
+RESERVADA "auto"|"break"|"case"|"char"|"const"|"continue"|"default"|"do"|"double"|"else"|"enum"|"extern"|"float"|"for"|"goto"|"if"|"int"|"long"|"register"|"return"|"short"|"signed"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"volatile"|"while"
 DELIMITADOR [\(\)\{\}\?\:\;\,]
 OPERADOR [\+\-\*\/\%(\-\-)(\+\+)(\*\=)(\/\=)(\%\=)(\+\=)(\-\=)\.(\-\>)\*\&\[\]\~\|\^(\<\<)(\>\>)(\<\<\=)(\>\>\=)(\&\=)(\^\=)(\|\=)\<\>(\<\=)(\>\=)(\=\=)(\!\=)\!(\&\&)(\|\|)\=(\.\.\.)\#(\#\#)]|"sizeof"
 PALABRA [^"]
@@ -35,19 +35,20 @@ FL [\>\"]
 
 {COMENTARIOSIMPLE}      {
                         BEGIN(COMENS);
-						endError();
+						            endError();
                         }
 
 <COMENS>{SALTO}         {
                         ++counter;
                         BEGIN(INITIAL);
+                        /* Comentatio ignorado */
                         }
 
 <COMENS>[^\n]{1}      	{ /* Comentario ignorado */ }
 
 {COMENTARIOMULTILINEA}  {
                         BEGIN(COMENM);
-						endError();
+						            endError();
                         }
 
 <COMENM>{SALTO}         {
@@ -61,54 +62,72 @@ FL [\>\"]
 <COMENM>[^\n{COMENTARIOFINAL}]{1}      	{ /* Comentario ignorado */ }
 
 {NUMERO}+        {
-                fprintf(salida, "linea %d, ctc entera: %s \n", counter, yytext);
-						endError();
-                }
+                 fprintf(salida, "Analizador lexico, linea %d, ctc entera: %s \n", counter, yytext);
+						     endError();
+                 // return CONSTANTE_ENTERA;
+                 }
 
 {NUMERO}*[.]?{NUMERO}+[eE]?{SIGNO}?{NUMERO}*    {
-                                                fprintf(salida, "linea %d, ctc real: %s \n", counter, yytext);
-						endError();
+                                                fprintf(salida, "Analizador lexico, linea %d, ctc real: %s \n", counter, yytext);
+						                                    endError();
+                                                // return CONSTANTE_REAL;
                                                 }
 
+"include"               {
+                        fprintf(salida, "Analizador lexico, linea %d, palabra reservada: %s \n", counter, yytext);
+						            endError();
+                        // return INCLUDE;
+                        }
+
+"define"                {
+                        fprintf(salida, "Analizador lexico, linea %d, palabra reservada: %s \n", counter, yytext);
+                        endError();
+                        // return DEFINE;
+                        }
+
 {RESERVADA}             {
-                        fprintf(salida, "linea %d, palabra reservada: %s \n", counter, yytext);
-						endError();
+                        fprintf(salida, "Analizador lexico, linea %d, palabra reservada: %s \n", counter, yytext);
+						            endError();
                         }
 
 {DELIMITADOR}           {
                         fprintf(salida, "linea %d, delimitador: %s \n", counter, yytext);
-						endError();
+						            endError();
+                        // Hay que retornar delimitadores separados?
                         }
 
 {OPERADOR}*             {
                         fprintf(salida, "linea %d, operador %s \n", counter, yytext);
-						endError();
+						            endError();
+                        // return OPERADOR;
                         }
 
 {SALTO}                 {
                         ++counter;
-						endError();
+						            endError();
                         }
 
 {CIDENTIFICADOR}?{IDENTIFICADOR}*       {
                                         fprintf(salida, "linea %d, identificador: %s\n", counter, yytext);
-										endError();
+					                              endError();
+                                        // return IDENTIFICADOR;
                                         }
 
 {IL}{PALABRA}{FL}       {
                         fprintf(salida, "linea %d, librería: %s\n", counter, yytext);
-						endError();
+						            endError();
+                        // return LIBRERIA;
                         }
-                        
-{COMILLAS}\<			{
+
+{COMILLAS}\<			      {
                         fprintf(salida, "linea %d, librería: %s", counter, yytext);
-						endError();
+						            endError();
                         BEGIN(CADENA);
                         }
 
 {COMILLAS}              {
                         fprintf(salida, "linea %d, cadena: %s", counter, yytext);
-						endError();
+						            endError();
                         BEGIN(CADENA);
                         }
 
@@ -133,8 +152,8 @@ FL [\>\"]
                         }
 
 [^ \n\t]				{
-							onError();
-						}
+							  onError();
+						    }
 
 [ \t]					{ /* Ignoramos espacios y tabulaciones sueltas */ }
 
@@ -148,7 +167,7 @@ void onError()
 	else {
 		fprintf(salida, "%s", yytext);
 	}
-	
+
 	error = 1;
 }
 
