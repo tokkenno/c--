@@ -20,7 +20,13 @@ COMENTARIOSIMPLE "//"
 COMENTARIOMULTILINEA "/*"
 COMENTARIOFINAL "*/"
 DELIMITADOR [\(\)\{\}\?\:\;\,]
-OPERADOR [\+\-\*\/\%(\-\-)(\+\+)(\*\=)(\/\=)(\%\=)(\+\=)(\-\=)\.(\-\>)\*\&\[\]\~\|\^(\<\<)(\>\>)(\<\<\=)(\>\>\=)(\&\=)(\^\=)(\|\=)\<\>(\<\=)(\>\=)(\=\=)(\!\=)\!(\&\&)(\|\|)\=(\.\.\.)\#(\#\#)]|"sizeof"
+OPERADORLOGICO ">"|"<"|"<="|">="|"||"|"&&"|"!="|"=="|"!"
+OPERADORARITMETICO "+"|"-"|"*"|"/"|"%"|"++"|"--"|"&"|"|"|"~"|"^"|"<<"|">>"|"<<="|">>="
+OPERADORASIGNACION "="|"+="|"-="|"*="|"/="|"%="|"&="|"|="|"^="
+OPERADORFLECHA "->"
+OPERADORPUNTO "."
+OPERADORALMOHADILLA "#"|"##"
+OPERADORSIZEOF "sizeof"
 PALABRA [^"]
 CIDENTIFICADOR [a-zA-Z\_]
 IDENTIFICADOR [a-zA-Z\_0-9]
@@ -118,11 +124,21 @@ FL [\>\"]
                         // Hay que retornar delimitadores separados?
                         }
 
+{OPERADORLOGICO}        { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return(OPERADORLOGICO); }
+
 {OPERADOR}*             {
                         fprintf(salida, "Analizador lexico, linea %d, operador %s \n", counter, yytext);
 						            endError();
                         return OPERADOR;
                         }
+
+{OPERADORLOGICO}        { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return OPLOGICO; }
+{OPERADORARITMETICO}    { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return OPARITMETICO; }
+{OPERADORASIGNACION}    { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return OPASIGNACION; }
+{OPERADORFLECHA}        { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return FLECHA; }
+{OPERADORPUNTO}         { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return PUNTO; }
+{OPERADORALMOHADILLA}   { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return ALMOHADILLA; }
+{OPERADORSIZEOF}        { fprintf(salida, "LEXER(%d). Operador logico: %s\n", counter, yytext); endError(); return SIZEOF; }
 
 {SALTO}                 {
                         ++counter;
