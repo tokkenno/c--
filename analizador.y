@@ -9,21 +9,35 @@
   char * texto;
 }
 
-%token INCLUDE DEFINE
-%token ALMOHADILLA
-%token SUMA RESTA DIVISION MULTIPLICACION
-%token ARCHIVO
-%token IDENTIFICADOR
+%token <texto> INCLUDE DEFINE
+%token <texto> ALMOHADILLA
+%token <texto> SUMA RESTA DIVISION MULTIPLICACION
+%token <texto> ARCHIVO
+%token <texto> IDENTIFICADOR
+%token <valor_entero> ENTERO
+%token <valor_real> REAL
+%token <texto> CADENA
+%token <texto> CARACTER
 %start programa
+
+%type <texto> macros
+%type <texto> programa
+%type <texto> bloque
+%type <texto> definicion_funcion
+%type <texto> declaracion
 
 %%
 
-programa: < bloque > bloque;
+programa: bloque;
 
 bloque: definicion_funcion
     | declaracion
     | macros
 ;
+
+declaracion: INCLUDE;
+
+definicion_funcion: DEFINE;
 
 macros: ALMOHADILLA INCLUDE ARCHIVO
     | ALMOHADILLA DEFINE IDENTIFICADOR constante
