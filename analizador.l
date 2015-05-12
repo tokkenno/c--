@@ -1,6 +1,7 @@
 %{
         #include <stdio.h>
         #include <string.h>
+        #include "analizador.tab.h"
 
         FILE* salida;
         int counter = 1, i = 0;
@@ -18,7 +19,6 @@ BARRA \\
 COMENTARIOSIMPLE "//"
 COMENTARIOMULTILINEA "/*"
 COMENTARIOFINAL "*/"
-RESERVADA "auto"|"break"|"case"|"char"|"const"|"continue"|"default"|"do"|"double"|"else"|"enum"|"extern"|"float"|"for"|"goto"|"if"|"int"|"long"|"register"|"return"|"short"|"signed"|"static"|"struct"|"switch"|"typedef"|"union"|"unsigned"|"void"|"volatile"|"while"
 DELIMITADOR [\(\)\{\}\?\:\;\,]
 OPERADOR [\+\-\*\/\%(\-\-)(\+\+)(\*\=)(\/\=)(\%\=)(\+\=)(\-\=)\.(\-\>)\*\&\[\]\~\|\^(\<\<)(\>\>)(\<\<\=)(\>\>\=)(\&\=)(\^\=)(\|\=)\<\>(\<\=)(\>\=)(\=\=)(\!\=)\!(\&\&)(\|\|)\=(\.\.\.)\#(\#\#)]|"sizeof"
 PALABRA [^"]
@@ -64,42 +64,64 @@ FL [\>\"]
 {NUMERO}+        {
                  fprintf(salida, "Analizador lexico, linea %d, ctc entera: %s \n", counter, yytext);
 						     endError();
-                 // return CONSTANTE_ENTERA;
+                 return CONSTANTE_ENTERA;
                  }
 
 {NUMERO}*[.]?{NUMERO}+[eE]?{SIGNO}?{NUMERO}*    {
-                                                fprintf(salida, "Analizador lexico, linea %d, ctc real: %s \n", counter, yytext);
+                                                fprintf(salida, "LEXER(%d). Constante real: %s \n", counter, yytext);
 						                                    endError();
-                                                // return CONSTANTE_REAL;
+                                                return CONSTANTE_REAL;
                                                 }
 
-"include"               {
-                        fprintf(salida, "Analizador lexico, linea %d, palabra reservada: %s \n", counter, yytext);
-						            endError();
-                        // return INCLUDE;
-                        }
-
-"define"                {
-                        fprintf(salida, "Analizador lexico, linea %d, palabra reservada: %s \n", counter, yytext);
-                        endError();
-                        // return DEFINE;
-                        }
+"include"               { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return INCLUDE; }
+"define"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return DEFINE; }
+"auto"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return AUTO; }
+"break"                 { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return BREAK; }
+"case"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return CASE; }
+"char"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return CHAR; }
+"const"                 { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return CONST; }
+"continue"              { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return CONTINUE; }
+"default"               { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return DEFAULT; }
+"do"                    { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return DO; }
+"double"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return DOUBLE; }
+"else"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return ELSE; }
+"enum"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return ENUM; }
+"extern"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return EXTERN; }
+"float"                 { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return FLOAT; }
+"for"                   { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return FOR; }
+"goto"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return GOTO; }
+"if"                    { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return IF; }
+"int"                   { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return INT; }
+"long"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return LONG; }
+"register"              { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return REGISTER; }
+"return"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return RETURN; }
+"short"                 { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return SHORT; }
+"signed"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return SIGNED; }
+"static"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return STATIC; }
+"struct"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return STRUCT; }
+"switch"                { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return SWITCH; }
+"typedef"               { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return TYPEDEF; }
+"union"                 { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return UNION; }
+"unsigned"              { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return UNSIGNED; }
+"void"                  { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return VOID; }
+"volatile"              { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return VOLATILE; }
+"while"                 { fprintf(salida, "LEXER(%d). Palabra reservada: %s\n", counter, yytext); endError(); return WHILE; }
 
 {RESERVADA}             {
-                        fprintf(salida, "Analizador lexico, linea %d, palabra reservada: %s \n", counter, yytext);
+                        fprintf(salida, "Analizador lexico, linea %d, palabra reservada: %s\n \n", counter, yytext);
 						            endError();
                         }
 
 {DELIMITADOR}           {
-                        fprintf(salida, "linea %d, delimitador: %s \n", counter, yytext);
+                        fprintf(salida, "Analizador lexico, linea %d, delimitador: %s \n", counter, yytext);
 						            endError();
                         // Hay que retornar delimitadores separados?
                         }
 
 {OPERADOR}*             {
-                        fprintf(salida, "linea %d, operador %s \n", counter, yytext);
+                        fprintf(salida, "Analizador lexico, linea %d, operador %s \n", counter, yytext);
 						            endError();
-                        // return OPERADOR;
+                        return OPERADOR;
                         }
 
 {SALTO}                 {
@@ -108,25 +130,25 @@ FL [\>\"]
                         }
 
 {CIDENTIFICADOR}?{IDENTIFICADOR}*       {
-                                        fprintf(salida, "linea %d, identificador: %s\n", counter, yytext);
+                                        fprintf(salida, "Analizador lexico, linea %d, identificador: %s\n", counter, yytext);
 					                              endError();
-                                        // return IDENTIFICADOR;
+                                        return IDENTIFICADOR;
                                         }
 
 {IL}{PALABRA}{FL}       {
-                        fprintf(salida, "linea %d, librería: %s\n", counter, yytext);
+                        fprintf(salida, "Analizador lexico, linea %d, librería: %s\n", counter, yytext);
 						            endError();
-                        // return LIBRERIA;
+                        return LIBRERIA;
                         }
 
 {COMILLAS}\<			      {
-                        fprintf(salida, "linea %d, librería: %s", counter, yytext);
+                        fprintf(salida, "Analizador lexico, linea %d, librería: %s", counter, yytext);
 						            endError();
                         BEGIN(CADENA);
                         }
 
 {COMILLAS}              {
-                        fprintf(salida, "linea %d, cadena: %s", counter, yytext);
+                        fprintf(salida, "Analizador lexico, linea %d, cadena: %s", counter, yytext);
 						            endError();
                         BEGIN(CADENA);
                         }
