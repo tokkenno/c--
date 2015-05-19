@@ -30,6 +30,11 @@ OPERADORSIZEOF "sizeof"
 PALABRA [^"]
 CIDENTIFICADOR [a-zA-Z\_]
 IDENTIFICADOR [a-zA-Z\_0-9]
+
+
+RESERVADA "erm....eto..."
+OPERADOR "y aqui lo mismo..."
+
 IL [\"\<]
 FL [\>\"]
 
