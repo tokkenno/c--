@@ -17,7 +17,7 @@
 /* Definición de los TOKENS */
 
 %token <valor_real> REAL
-%token <valor_entero> ENTERO
+%token <valor_entero> INTEGER
 %token <texto> IDENTIFIER LIBRARY CHARACTER STRING AUTO BREAK CASE CHAR CONTINUE DEFAULT DEFINE DO DOUBLE ELSE  EXTERN FLOAT FOR GOTO IF INCLUDE INT REGISTER RETURN SHORT SIGNED STATIC STRUCT SWITCH TYPEDEF UNION UNSIGNED VOID WHILE LONG
 
 /* Definición de la ASOCIATIVIDAD y PRECEDENCIA de los operadores */
@@ -65,7 +65,7 @@ macros : '#' INCLUDE LIBRARY { printf("macros -> '#' include LIBRARY\n"); }
        | '#' DEFINE IDENTIFIER constante { printf("macros -> '#' define IDENTIFIER constante\n"); };
 
 
-constante : ENTERO { printf("constante -> ENTERO\n"); }
+constante : INTEGER { printf("constante -> INTEGER\n"); }
           | REAL { printf("constante -> REAL\n"); }
           | STRING { printf("constante -> STRING\n"); }
           | CHARACTER { printf("constante -> CHARACTER\n"); };
@@ -178,7 +178,7 @@ expresion_logica: expresion_prefija { printf("Expresion_logica -> expresion_pref
           | expresion BYTERMOVE expresion { printf("Expresion_logica -> expresion 'BYTERMOVE' expresion\n"); };
 
 
-expresion_constante : ENTERO { printf("expresion_constante -> ENTERO\n"); }
+expresion_constante : INTEGER { printf("expresion_constante -> INTEGER\n"); }
                       | REAL { printf("expresion_constante -> REAL\n"); }
                       | STRING { printf("expresion_constante -> STRING\n"); }
                       | CHARACTER { printf("expresion_constante -> CHARACTER\n"); }
