@@ -18,7 +18,7 @@
 
 %token <valor_real> REAL
 %token <valor_entero> INTEGER
-%token <texto> IDENTIFIER LIBRARY CHARACTER STRING AUTO BREAK CASE CHAR CONTINUE DEFAULT DEFINE DO DOUBLE ELSE  EXTERN FLOAT FOR GOTO IF INCLUDE INT REGISTER RETURN SHORT SIGNED STATIC STRUCT SWITCH TYPEDEF UNION UNSIGNED VOID WHILE LONG
+%token <texto> IDENTIFIER LIBRARY CHARACTER CADENA AUTO BREAK CASE CHAR CONTINUE DEFAULT DEFINE DO DOUBLE ELSE  EXTERN FLOAT FOR GOTO IF INCLUDE INT REGISTER RETURN SHORT SIGNED STATIC STRUCT SWITCH TYPEDEF UNION UNSIGNED VOID WHILE LONG
 
 /* Definición de la ASOCIATIVIDAD y PRECEDENCIA de los operadores */
 
@@ -67,7 +67,7 @@ macros : '#' INCLUDE LIBRARY { printf("macros -> '#' include LIBRARY\n"); }
 
 constante : INTEGER { printf("constante -> INTEGER\n"); }
           | REAL { printf("constante -> REAL\n"); }
-          | STRING { printf("constante -> STRING\n"); }
+          | CADENA { printf("constante -> CADENA\n"); }
           | CHARACTER { printf("constante -> CHARACTER\n"); };
 
 /****************************** DECLARACIONES ************************************/
@@ -180,7 +180,7 @@ expresion_logica: expresion_prefija { printf("Expresion_logica -> expresion_pref
 
 expresion_constante : INTEGER { printf("expresion_constante -> INTEGER\n"); }
                       | REAL { printf("expresion_constante -> REAL\n"); }
-                      | STRING { printf("expresion_constante -> STRING\n"); }
+                      | CADENA { printf("expresion_constante -> CADENA\n"); }
                       | CHARACTER { printf("expresion_constante -> CHARACTER\n"); }
                       | '(' expresion ')' { printf("expresion_constante -> '(' expresion ')'\n"); };
 

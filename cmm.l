@@ -144,7 +144,7 @@ ESPACIOS (\n|\t|\ )
     BEGIN(INITIAL);
     printf("(Lexer | Linea %d) Cadena de caracteres: %s \n", lineStart, buffer);
     strncpy(buffer, "", 1024);
-    return(STRING);
+    return(CADENA);
 }
 
 .   {printf("(Lexer | Linea %d) ERROR: %s\n", yylineno, yytext);}
