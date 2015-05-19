@@ -87,7 +87,7 @@ ESPACIOS (\n|\t|\ )
 "=="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(DEQUAL); }
 "!="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(OPPOSITEAS); }
 "*="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(TEQUAL); }
-"/="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(DEQUAL); }
+"/="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(DIVEQUAL); }
 "%="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(PEQUAL); }
 "+="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(PLUSEQUAL); }
 "-="    { printf("(Lexer | Linea %d) Operador: %s\n", yylineno, yytext); return(MINUSEQUAL); }
